@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .subtitle1 {
+    @apply text-sm  md:text-lg font-semibold text-[#000];
+  }
+
+  h4 {
+    @apply text-[16px]  font-bold;
+  }
+
+  h6 {
+    @apply text-[20px] md:text-[25px] font-bold;
+  }
+
+  p {
+    @apply text-[12px] md:text-[16px] font-normal;
+  }
+}

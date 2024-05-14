@@ -1,0 +1,1 @@
+export {default as saleblinkLogo} from "./saleblink-logo.png"
