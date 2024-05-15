@@ -8,7 +8,8 @@ export default {
     extend: {
       colors: {
         primary: "#50a1ff",
-        secondary: "#3ad458"
+        secondary: "#3ad458",
+        pink: "#ed317f"
       }
     },
   },

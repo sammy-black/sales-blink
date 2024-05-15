@@ -1,32 +1,89 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button } from "rsuite";
+import { Button, Input } from "rsuite";
 import { FaPlus } from "react-icons/fa6";
-import SequenceTable from "./SequenceTable";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+
+import SequenceTable from "./SequenceTable";
+import DialogContainer from "../../components/DialogContainer";
+import { setSequenceForm } from "../../redux/slice/sequence";
+
+const CreateSequenceModal = ({
+  open,
+  handleCreateSequence,
+  value,
+  onChange,
+  handleClose,
+}) => (
+  <DialogContainer
+    open={open}
+    title={"Create a Sequence from Scratch"}
+    overflow={true}
+    handleClose={handleClose}
+    actionButtons={
+      <>
+        <Button onClick={handleClose} color="red" appearance="primary">
+          Cancel
+        </Button>
+        <Button
+          className="bg-primary"
+          onClick={handleCreateSequence}
+          appearance="primary"
+        >
+          Create Sequence
+        </Button>
+      </>
+    }
+  >
+    <Input
+      value={value}
+      size="lg"
+      onChange={onChange}
+      placeholder="Enter a name for your sequence"
+    />
+  </DialogContainer>
+);
 const Sequences = () => {
   const navigate = useNavigate();
-  return (
-    <div>
-      <h6>Outreach Sequences</h6>
-      <div className="flex flex-col sm:flex-row  justify-between">
-        <p className="mt-2">
-          Create/Manage your sequences with automated emails & timely tasks.
-        </p>
-        <Button
-          onClick={() => navigate("/sequences/create")}
-          endIcon={<FaPlus />}
-          className=" bg-primary text-white max-sm:mt-3"
-        >
-          Create New Sequence
-        </Button>
-      </div>
+  const dispatch = useDispatch();
+  const [openSequence, setOpenSequence] = useState(false);
+  const [sequenceName, setSequenceName] = useState("");
 
-      <div className="mt-6">
-        <SequenceTable data={dataList} />
+  const handleCreateSequence = () => {
+    dispatch(setSequenceForm({ name: sequenceName }));
+    navigate("/sequences/create");
+  };
+  return (
+    <>
+      <div>
+        <h6>Outreach Sequences</h6>
+        <div className="flex flex-col sm:flex-row  justify-between">
+          <p className="mt-2">
+            Create/Manage your sequences with automated emails & timely tasks.
+          </p>
+          <Button
+            onClick={() => setOpenSequence(true)}
+            endIcon={<FaPlus />}
+            className=" bg-primary text-white max-sm:mt-3"
+          >
+            Create New Sequence
+          </Button>
+        </div>
+
+        <div className="mt-6">
+          <SequenceTable data={dataList} />
+        </div>
       </div>
-    </div>
+      <CreateSequenceModal
+        open={openSequence}
+        value={sequenceName}
+        onChange={setSequenceName}
+        handleClose={() => setOpenSequence(false)}
+        handleCreateSequence={handleCreateSequence}
+      />
+    </>
   );
 };
 
